@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Kinect Positioning" Height="298" Width="540" xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Window_Loaded" Closing="Window_Closing" ResizeMode="NoResize">
     <Grid>
-        <my:KinectSensorChooser HorizontalAlignment="Left" Margin="133,45,0,0" Name="kinectSensorChooser1" VerticalAlignment="Top" Width="328" />
+        <my:KinectSensorChooser HorizontalAlignment="Left" Margin="8,43,0,0" Name="kinectSensorChooser" VerticalAlignment="Top" Width="328" />
         <Image Height="240" HorizontalAlignment="Left" Margin="12,12,0,0" Name="depthImage" Stretch="Fill" VerticalAlignment="Top" Width="320" />
         <Slider Height="25" HorizontalAlignment="Left" Margin="361,42,0,0" Name="sliderMinDist" VerticalAlignment="Top" Width="150" Maximum="4096" Minimum="400" Value="400" TickFrequency="10" IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True" />
-        <Slider Height="25" HorizontalAlignment="Left" Margin="361,139,0,0" Name="sliderMaxDist" VerticalAlignment="Top" Width="150" Minimum="400" Maximum="4096" Value="1500" TickFrequency="10" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True" />
+        <Slider Height="25" HorizontalAlignment="Left" Margin="361,128,0,0" Name="sliderMaxDist" VerticalAlignment="Top" Width="150" Minimum="400" Maximum="4096" Value="1500" TickFrequency="10" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="361,16,0,0" Name="textMinDistance" Text="Minimum Distance (mm)" VerticalAlignment="Top" Width="150" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="361,113,0,0" Name="textBlock2" Text="Maximum Distance (mm)" VerticalAlignment="Top" Width="150" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="413,73,0,0" Name="textMinDistVal" Text="" VerticalAlignment="Top" Width="57" TextAlignment="Center" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="413,170,0,0" Name="textMaxDistVal" Text="" VerticalAlignment="Top" Width="57" TextAlignment="Center" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="361,102,0,0" Name="textBlock2" Text="Maximum Distance (mm)" VerticalAlignment="Top" Width="150" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="414,65,0,0" Name="textMinDistVal" Text="" VerticalAlignment="Top" Width="57" TextAlignment="Center" />
+        <TextBlock HorizontalAlignment="Left" Margin="414,151,0,85" Name="textMaxDistVal" Text="" Width="57" TextAlignment="Center" />
     </Grid>
 </Window>

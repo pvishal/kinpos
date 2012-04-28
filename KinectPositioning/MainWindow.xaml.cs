@@ -28,10 +28,10 @@ namespace KinectPositioning
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
+            kinectSensorChooser.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser_KinectSensorChanged);
         }
 
-        void kinectSensorChooser1_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void kinectSensorChooser_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
 
             var oldSensor = (KinectSensor)e.OldValue;
@@ -64,14 +64,13 @@ namespace KinectPositioning
             catch (System.IO.IOException)
             {
                 //this happens if another app is using the Kinect
-                kinectSensorChooser1.AppConflictOccurred();
+                kinectSensorChooser.AppConflictOccurred();
             }
         }
 
 
         void sensor_AllFramesReady(object sender, AllFramesReadyEventArgs e)
         {
-
             using (DepthImageFrame depthFrame = e.OpenDepthImageFrame())
             {
                 if (depthFrame == null)
@@ -87,20 +86,21 @@ namespace KinectPositioning
                 textMinDistVal.Text = sliderMinDist.Value.ToString();
                 textMaxDistVal.Text = sliderMaxDist.Value.ToString();
 
-                byte[] pixels = GenerateColoredBytes(depthFrame);
+                BitmapSource imageToDisplay = sliceDepthImage(depthFrame, (int)sliderMinDist.Value, (int)sliderMaxDist.Value);
 
-                //number of bytes per row width * 4 (B,G,R,Empty)
-                int stride = depthFrame.Width * 4;
-
-                //create image
-                depthImage.Source =
-                    BitmapSource.Create(depthFrame.Width, depthFrame.Height,
-                    96, 96, PixelFormats.Bgr32, null, pixels, stride);
-
+                //display the image
+                depthImage.Source = imageToDisplay;
             }
         }
 
-        private Byte[] GenerateColoredBytes(DepthImageFrame depthFrame)
+        private static BitmapSource sliceDepthImage(DepthImageFrame depthFrame, int min, int max)
+        {
+            byte[] pixels = GenerateColoredBytes(depthFrame, min, max);
+
+            return BitmapSource.Create(depthFrame.Width, depthFrame.Height, 96, 96, PixelFormats.Bgr32, null, pixels, depthFrame.Width*4);
+        }
+
+        private static Byte[] GenerateColoredBytes(DepthImageFrame depthFrame, int minRange, int maxRange)
         {
             //get the raw data from kinect with the depth for every pixel
             short[] rawDepthData = new short[depthFrame.PixelDataLength];
@@ -127,7 +127,7 @@ namespace KinectPositioning
 
                 int depth = rawDepthData[depthIndex] >> DepthImageFrame.PlayerIndexBitmaskWidth;
 
-                if (depth <= sliderMinDist.Value || depth > sliderMaxDist.Value)
+                if (depth <= minRange || depth > maxRange)
                 {
                     pixels[colorIndex + BlueIndex] = 0;
                     pixels[colorIndex + GreenIndex] = 0;
@@ -147,7 +147,7 @@ namespace KinectPositioning
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            StopKinect(kinectSensorChooser1.Kinect);
+            StopKinect(kinectSensorChooser.Kinect);
         }
 
         void StopKinect(KinectSensor sensor)
