@@ -79,6 +79,14 @@ namespace KinectPositioning
                     return;
                 }
 
+                if (sliderMinDist.Value > sliderMaxDist.Value)
+                {
+                    sliderMinDist.Value = sliderMaxDist.Value;
+                }
+
+                textMinDistVal.Text = sliderMinDist.Value.ToString();
+                textMaxDistVal.Text = sliderMaxDist.Value.ToString();
+
                 byte[] pixels = GenerateColoredBytes(depthFrame);
 
                 //number of bytes per row width * 4 (B,G,R,Empty)
@@ -119,43 +127,18 @@ namespace KinectPositioning
 
                 int depth = rawDepthData[depthIndex] >> DepthImageFrame.PlayerIndexBitmaskWidth;
 
-                if (depth <= 400)
+                if (depth <= sliderMinDist.Value || depth > sliderMaxDist.Value)
                 {
                     pixels[colorIndex + BlueIndex] = 0;
                     pixels[colorIndex + GreenIndex] = 0;
                     pixels[colorIndex + RedIndex] = 0;
                 }
-                else if (depth > 400 && depth <= 800)
+                else
                 {
-                    //we are very close
-                    pixels[colorIndex + BlueIndex] = 255;
-                    pixels[colorIndex + GreenIndex] = 0;
-                    pixels[colorIndex + RedIndex] = 0;
-
-                }
-                else if (depth > 800 && depth <= 1200)
-                {
-                    //we are very close
                     pixels[colorIndex + BlueIndex] = 0;
                     pixels[colorIndex + GreenIndex] = 255;
                     pixels[colorIndex + RedIndex] = 0;
-
-                }
-                else if (depth > 1200 && depth <= 2000)
-                {
-                    //we are a bit further away
-                    pixels[colorIndex + BlueIndex] = 0;
-                    pixels[colorIndex + GreenIndex] = 255;
-                    pixels[colorIndex + RedIndex] = 255;
-                }
-                else if (depth > 2000)
-                {
-                    //we are the farthest
-                    pixels[colorIndex + BlueIndex] = 0;
-                    pixels[colorIndex + GreenIndex] = 0;
-                    pixels[colorIndex + RedIndex] = 0;
-                }
-
+                } 
             }
 
 
