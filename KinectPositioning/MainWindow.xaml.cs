@@ -86,10 +86,14 @@ namespace KinectPositioning
                 textMinDistVal.Text = sliderMinDist.Value.ToString();
                 textMaxDistVal.Text = sliderMaxDist.Value.ToString();
 
-                BitmapSource imageToDisplay = sliceDepthImage(depthFrame, (int)sliderMinDist.Value, (int)sliderMaxDist.Value);
+                BitmapSource depthBitmapSource = sliceDepthImage(depthFrame, (int)sliderMinDist.Value, (int)sliderMaxDist.Value);
+                
+                //Create a bitmap from the depth information 
+                System.Drawing.Bitmap depthBmp = depthBitmapSource.ToBitmap();
 
-                //display the image
-                depthImage.Source = imageToDisplay;
+                //Aforge will later perform image processing here.
+
+                depthImage.Source = depthBitmapSource;
             }
         }
 
