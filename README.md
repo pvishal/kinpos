@@ -1,4 +1,4 @@
-kinect-ln
+kinect-pos
 =========
 
-Kinect-Localisation: A simple 3D localisation sytem with Kinect
+Kinect-Positioning: A simple 3D positioning sytem with Kinect
