@@ -5,12 +5,12 @@ KinPos is an object counter and a localization system using Kinect. The program 
 ![Screenshot](https://github.com/pvishal/kinpos/raw/master/media/kinpos.png)  
 
 ## Dependencies
-AForge.NET Image Processing Libraries: http://www.aforgenet.com/   
-KinectWpfViewers: From the Kinect SDK Samples   
+-   AForge.NET Image Processing Libraries: http://www.aforgenet.com/   
+-   KinectWpfViewers: From the Kinect SDK Samples   
 
 ## Credits
-This project uses some code from:  
-Kinect SDK Samples   
-AForge.NET examples   
-Kibloc Blob Counter: http://kibloc.codeplex.com/   
+-   This project uses some code from:  
+-   Kinect SDK Samples   
+-   AForge.NET examples   
+-   Kibloc Blob Counter: http://kibloc.codeplex.com/   
 
