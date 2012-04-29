@@ -31,6 +31,7 @@ namespace KinectPositioning
             // Prepare the output image
             Bitmap outImage = new Bitmap(depthImage.Width, depthImage.Height);
 
+
             // Create an image for AForge to process
             this.image = AForge.Imaging.Image.Clone(depthImage, PixelFormat.Format24bppRgb);
             imageWidth = this.image.Width;
@@ -48,6 +49,8 @@ namespace KinectPositioning
             blobCounter.ProcessImage(this.image);
             blobs = blobCounter.GetObjectsInformation();
 
+            BlobCount = blobs.Count();
+
             if (blobs.Length > 0)
             {
                 blobCounter.ExtractBlobsImage(this.image, blobs[0], true);
@@ -55,13 +58,14 @@ namespace KinectPositioning
             }
             else
             {
-                
+                //Clear the output bitmap
+                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(outImage))
+                {
+                    g.Clear(System.Drawing.Color.Black);
+                }
             }
 
-            BlobCount = blobs.Count();
-
             return outImage;
-
         }
 
         public int BlobCount { get; set; }
