@@ -34,6 +34,15 @@ namespace KinectPositioning
             kinectSensorChooser.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser_KinectSensorChanged);
         }
 
+        private void buttonTilt_Click(object sender, RoutedEventArgs e)
+        {
+            //Set angle to slider1 value
+            if (kinectSensorChooser.Kinect != null && kinectSensorChooser.Kinect.IsRunning)
+            {
+                kinectSensorChooser.Kinect.ElevationAngle = (int)sliderTilt.Value;
+            }
+        }
+
         void kinectSensorChooser_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
 
