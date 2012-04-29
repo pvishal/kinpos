@@ -93,14 +93,17 @@ namespace KinectPositioning
                 
                 //Create a bitmap from the depth information 
                 System.Drawing.Bitmap depthBmp = depthBitmapSource.ToBitmap();
+                System.Drawing.Bitmap outBmp = new System.Drawing.Bitmap(depthBmp.Width, depthBmp.Height);
 
                 //Aforge performs image processing here.
-                blobsDetector.CountBlobs(depthBmp);
+                outBmp = blobsDetector.CountBlobs(depthBmp);
 
                 textResult.Text = blobsDetector.BlobCount + " blobs detected.";
 
-                BitmapSource procBitmapSource = depthBmp.ToBitmapSource();
+                //Create a bitmapsource to show the processed image
+                BitmapSource procBitmapSource = outBmp.ToBitmapSource();
 
+                //Display the images
                 depthImageDisplay.Source = depthBitmapSource;
                 procImageDisplay.Source = procBitmapSource;
             }
