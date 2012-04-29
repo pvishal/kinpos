@@ -1,4 +1,13 @@
-kinect-pos
-=========
+# Kinect-Pos : Simple 3D position finder using Microsoft Kinect
 
-Kinect-Positioning: A simple 3D positioning sytem with Kinect
+Kinect-Pos is an object counter and a localization system using Kinect. The program detects objects using blobs in the depth map and calculates it position in the 3D space.
+
+## Dependencies
+AForge.NET Image Processing Libraries: http://www.aforgenet.com/
+KinectWpfViewers: From the Kinect SDK Samples
+
+## Credits
+This project uses some code from:
+Kinect SDK Samples
+AForge.NET examples
+Kibloc Blob Counter: http://kibloc.codeplex.com/
