@@ -21,6 +21,9 @@ namespace KinectPositioning
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        BlobsDetector blobsDetector = new BlobsDetector();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -92,6 +95,9 @@ namespace KinectPositioning
                 System.Drawing.Bitmap depthBmp = depthBitmapSource.ToBitmap();
 
                 //Aforge will later perform image processing here.
+                blobsDetector.CountBlobs(depthBmp);
+
+                textResult.Text = blobsDetector.BlobCount + " blobs detected.";
 
                 depthImage.Source = depthBitmapSource;
             }
