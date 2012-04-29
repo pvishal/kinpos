@@ -13,4 +13,4 @@ AForge.NET examples
 Kibloc Blob Counter: http://kibloc.codeplex.com/   
 
 ## Screenshots
-![Screenshot](https://github.com/pvishal/kinect-pos/blob/master/media/kinpos.png)
+![Screenshot](https://github.com/pvishal/kinect-pos/raw/master/media/kinpos.png)
