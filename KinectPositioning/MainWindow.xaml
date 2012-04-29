@@ -1,10 +1,10 @@
 ﻿<Window x:Class="KinectPositioning.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Kinect Positioning" Height="298" Width="555" xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Window_Loaded" Closing="Window_Closing" ResizeMode="NoResize">
-    <Grid Width="535" Height="259">
+        Title="Kinect Positioning" Height="552" Width="555" xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" Loaded="Window_Loaded" Closing="Window_Closing" ResizeMode="NoResize">
+    <Grid Width="535" Height="510" HorizontalAlignment="Center" VerticalAlignment="Center">
         <my:KinectSensorChooser HorizontalAlignment="Left" Margin="8,43,0,0" Name="kinectSensorChooser" VerticalAlignment="Top" Width="328" />
-        <Image Height="240" HorizontalAlignment="Left" Margin="12,12,0,0" Name="depthImage" Stretch="Fill" VerticalAlignment="Top" Width="320" />
+        <Image Height="240" HorizontalAlignment="Left" Margin="12,12,0,0" Name="depthImageDisplay" Stretch="Fill" VerticalAlignment="Top" Width="320" />
         <Slider Height="25" HorizontalAlignment="Left" Margin="337,69,0,0" Name="sliderMinDist" VerticalAlignment="Top" Width="150" Maximum="4096" Minimum="400" Value="400" TickFrequency="10" IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True" />
         <Slider Height="25" HorizontalAlignment="Left" Margin="337,121,0,0" Name="sliderMaxDist" VerticalAlignment="Top" Width="150" Minimum="400" Maximum="4096" Value="1500" TickFrequency="10" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="337,51,0,0" Name="textMinDistance" Text="Minimum Distance (mm)" VerticalAlignment="Top" Width="150" />
@@ -12,7 +12,8 @@
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="490,70,0,0" Name="textMinDistVal" Text="0" VerticalAlignment="Top" Width="40" TextAlignment="Center" />
         <TextBlock HorizontalAlignment="Left" Margin="490,122,0,114" Name="textMaxDistVal" Text="0" Width="40" TextAlignment="Center" />
         <TextBlock Background="LightGray" Margin="337,12,0,0" Padding="10" Text="Set the detection Range" Name="textRange" HorizontalAlignment="Left" Width="193" Height="37" VerticalAlignment="Top" />
-        <TextBlock Background="LightGray" Height="37" HorizontalAlignment="Left" Margin="337,160,0,0" Name="textBlock1" Padding="10" Text="Results" VerticalAlignment="Top" Width="193" />
-        <TextBlock Height="26" HorizontalAlignment="Left" Margin="337,207,0,0" Name="textResult" Text="0 blobs detected." VerticalAlignment="Top" Width="193" />
+        <TextBlock Background="LightGray" Height="37" HorizontalAlignment="Left" Margin="337,259,0,0" Name="textBlock1" Padding="10" Text="Results" VerticalAlignment="Top" Width="193" />
+        <TextBlock Height="26" HorizontalAlignment="Left" Margin="337,306,0,0" Name="textResult" Text="0 blobs detected." VerticalAlignment="Top" Width="193" />
+        <Image Height="240" HorizontalAlignment="Left" Margin="12,259,0,0" Name="procImageDisplay" Stretch="Fill" VerticalAlignment="Top" Width="320" />
     </Grid>
 </Window>
