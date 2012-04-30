@@ -79,7 +79,7 @@ namespace KinectPositioning
                 foreach (Blob blob in blobs)
                 {
                     currentDistance = blob.CenterOfGravity.DistanceTo(this.Position);
-                    if (currentDistance < 75)
+                    if (currentDistance < 50)
                     {
                         this.TrackedBlobCount = 1;
                         if (currentDistance < leastDistance)
@@ -94,7 +94,14 @@ namespace KinectPositioning
                     }
                 }
 
-                this.currentBlob = nearestBlob;
+                if (this.TrackedBlobCount > 0)
+                {
+                    this.currentBlob = nearestBlob;
+                }
+                else
+                {
+                    // Do not update the current blob
+                }
             }
             else
             {
