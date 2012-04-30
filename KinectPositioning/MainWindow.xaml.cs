@@ -23,6 +23,7 @@ namespace KinectPositioning
     {
 
         BlobTracker blobsDetector = new BlobTracker();
+        int trackMode;
 
         public MainWindow()
         {
@@ -31,6 +32,7 @@ namespace KinectPositioning
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            trackMode = 0;
             kinectSensorChooser.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser_KinectSensorChanged);
         }
 
@@ -41,6 +43,11 @@ namespace KinectPositioning
             {
                 kinectSensorChooser.Kinect.ElevationAngle = (int)sliderTilt.Value;
             }
+        }
+
+        private void buttonTrack_Click(object sender, RoutedEventArgs e)
+        {
+            trackMode = 1;
         }
 
         void kinectSensorChooser_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -105,9 +112,9 @@ namespace KinectPositioning
                 System.Drawing.Bitmap outBmp = new System.Drawing.Bitmap(depthBmp.Width, depthBmp.Height);
 
                 //Aforge performs image processing here.
-                outBmp = blobsDetector.ProcessFrame(depthBmp);
+                outBmp = blobsDetector.ProcessFrame(depthBmp, trackMode);
 
-                textResult.Text = blobsDetector.BlobCount + " blobs detected.";
+                textResult.Text = blobsDetector.TotalBlobCount + " blobs detected.";
 
                 //Create a bitmapsource to show the processed image
                 BitmapSource procBitmapSource = outBmp.ToBitmapSource();

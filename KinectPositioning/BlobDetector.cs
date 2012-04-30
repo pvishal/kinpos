@@ -23,23 +23,23 @@ namespace KinectPositioning
 
         // The current blob being processed and displayed
         private Blob currentBlob;
-        public int BlobCount;
+        public int TotalBlobCount;
+        public int TrackedBlobCount;
+        public Bitmap TrackedBlobImage;
+
+        // The blob being currently tracked
+        private AForge.Point Position;
 
         public BlobTracker()
         {
+            TrackedBlobImage = new Bitmap(320, 240);
         }
 
-        private int GetBlobOfInterest(Bitmap image)
+        private int FindLargestBlob()
         {
             Blob[] blobs;
             int blobCount;
 
-            // Set blob filters
-            blobCounter.FilterBlobs = true;
-            blobCounter.MinHeight = 15;
-            blobCounter.MinWidth = 15;
-            blobCounter.MaxHeight = 100;
-            blobCounter.MaxWidth = 100;
             blobCounter.ObjectsOrder = ObjectsOrder.Area;
 
             // Find the blobs
@@ -48,7 +48,7 @@ namespace KinectPositioning
 
             blobCount = blobs.Count();
 
-            if(blobCount > 0)
+            if (blobCount > 0)
             {
                 currentBlob = blobs[0];
             }
@@ -56,34 +56,110 @@ namespace KinectPositioning
             return blobCount;
         }
 
-        public Bitmap ProcessFrame(Bitmap depthImage)
+        private int FindNearestBlob()
         {
-            // Prepare the output image
-            Bitmap outImage = new Bitmap(depthImage.Width, depthImage.Height);
+            Blob[] blobs;
+            int blobCount;
 
+            blobCounter.ObjectsOrder = ObjectsOrder.None;
+
+            // Find the blobs
+            blobCounter.ProcessImage(this.image);
+            blobs = blobCounter.GetObjectsInformation();
+
+            blobCount = blobs.Count();
+            TotalBlobCount = blobCount;
+
+            if (blobCount > 0)
+            {
+                Blob nearestBlob = new Blob(blobs[0]);
+                float leastDistance = nearestBlob.CenterOfGravity.DistanceTo(this.Position);
+                float currentDistance;
+
+                foreach (Blob blob in blobs)
+                {
+                    currentDistance = blob.CenterOfGravity.DistanceTo(this.Position);
+                    if (currentDistance < 75)
+                    {
+                        this.TrackedBlobCount = 1;
+                        if (currentDistance < leastDistance)
+                        {
+                            nearestBlob = blob;
+                            leastDistance = currentDistance;
+                        }
+                    }
+                    else
+                    {
+                        this.TrackedBlobCount = 0;
+                    }
+                }
+
+                this.currentBlob = nearestBlob;
+            }
+            else
+            {
+                this.TrackedBlobCount = 0;
+            }
+
+            return blobCount;
+        }
+
+        public Bitmap ProcessFrame(Bitmap depthImage, int trackMode)
+        {   
             // Create an image for AForge to process
             this.image = AForge.Imaging.Image.Clone(depthImage, PixelFormat.Format24bppRgb);
             imageWidth = this.image.Width;
             imageHeight = this.image.Height;
 
+            // Set the blob detection parameters
+            blobCounter.FilterBlobs = true;
+            blobCounter.MinHeight = 15;
+            blobCounter.MinWidth = 15;
+            blobCounter.MaxHeight = 100;
+            blobCounter.MaxWidth = 100;
+
             // Find the blob of interest
-            BlobCount = GetBlobOfInterest(this.image);
-
-            if (BlobCount > 0)
+            if (trackMode == 0)
             {
-                blobCounter.ExtractBlobsImage(this.image, currentBlob, true);
-                outImage = currentBlob.Image.ToManagedImage();
-            }
-            else
-            {
-                //Clear the output bitmap
-                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(outImage))
+                TotalBlobCount = FindLargestBlob();
+                if (TotalBlobCount > 0)
                 {
-                    g.Clear(System.Drawing.Color.Black);
+                    blobCounter.ExtractBlobsImage(this.image, currentBlob, true);
+                    TrackedBlobImage = currentBlob.Image.ToManagedImage();
+
+                    //Remember the blob
+                    this.Position = currentBlob.CenterOfGravity;
                 }
+                else
+                {
+                    //Clear the output bitmap
+                    using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(TrackedBlobImage))
+                    {
+                        g.Clear(System.Drawing.Color.Black);
+                    }
+                }
+
+                TrackedBlobCount = 0;
+            }
+            else if (trackMode == 1)
+            {
+                // Find the blob closest to trackedBlob
+                TotalBlobCount = FindNearestBlob();
+                
+                // At this point currentBlob would either be the older trackedBlob or the current blob 
+                // closest to it. In any case, get its image.
+
+                if (TrackedBlobCount > 0)
+                {
+                    blobCounter.ExtractBlobsImage(this.image, currentBlob, true);
+                    this.TrackedBlobImage = currentBlob.Image.ToManagedImage();
+                }
+
+                //Remember this blob
+                this.Position = currentBlob.CenterOfGravity;
             }
 
-            return outImage;
+            return TrackedBlobImage;
         }
     }
 }
