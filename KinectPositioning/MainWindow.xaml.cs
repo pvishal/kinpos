@@ -22,7 +22,7 @@ namespace KinectPositioning
     public partial class MainWindow : Window
     {
 
-        BlobsDetector blobsDetector = new BlobsDetector();
+        BlobTracker blobsDetector = new BlobTracker();
 
         public MainWindow()
         {
@@ -105,7 +105,7 @@ namespace KinectPositioning
                 System.Drawing.Bitmap outBmp = new System.Drawing.Bitmap(depthBmp.Width, depthBmp.Height);
 
                 //Aforge performs image processing here.
-                outBmp = blobsDetector.CountBlobs(depthBmp);
+                outBmp = blobsDetector.ProcessFrame(depthBmp);
 
                 textResult.Text = blobsDetector.BlobCount + " blobs detected.";
 
